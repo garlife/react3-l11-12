@@ -1,54 +1,38 @@
-import React, { useState, useReducer, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useMemo, useCallBack } from 'react';
 import './style.css';
 
-const initialState = {
-  age: 34,
-};
-
-// action - спец объект вида { type: "increment", age: #TODO}
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'increment':
-      return { age: state.age + 1 };
-  }
-  return initialState;
-};
+function createDisplayName(_name, _surName){
+  const user = { name: _name, surName: _surName };
+  console.log(user);
+  return user;
+  
+}
 
 export default function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
   const [name, setName] = useState('Саша');
-  // const [age, setAge] = useState(34);
+  const [surName, setSurName] = useState('Романов');
+  const [age, setAge] = useState('34');
+  const displayName = useMemo(
+    () => createDisplayName(name, surName), [name, surName]
+    );
+ 
 
-  useLayoutEffect(() => {
-    document.title = `Привет, ${name}`;
-    //цикл для намеренного торможения для визуализации проблемы хука useLayoutEffect
-    //for(let i=0; i < 2000000000; i++) {};
-    console.log('App', 'useEffect');
-  }, [name]);
-
-  useEffect(() => {
-    //код инициилизации/подписки на ресурсы componentDidMount, хук будет вызван один раз
-    return () => {
-      // освобождение ресурсов
-      //это событие componentWillUnmunt
-    }
-  }, [])
-
-  const handlerChangeName = (event) => {
-    setName(event.target.value);
-  };
-
-
-//memoization - возвращает те же самые значения функции
-
+  //memoization - возвращает те же самые значения функции
+  //ниже поломанное решение, требует фикса
   return (
     <>
-      <h1>Привет, {name}</h1>
-      <input type="text" value={name} onChange={(e) => handlerChangeName(e)} />
-      <h3>Возраст: {state.age}</h3>
+      <h1>
+        Привет, {name} {surName}
+      </h1>
+      <input type="text" value={name} onChange={
+        // setName(() => {event.target.value})
+        } />
+
+      <h3>Возраст: {age}</h3>
       <p>
-        <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+        <button onClick={() => setAge((a) => a + 1)}>+</button>
       </p>
+      {JSON.stringify(displayName, null, 2)}
     </>
   );
 }
