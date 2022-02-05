@@ -21,7 +21,8 @@ export default function App() {
 
   useLayoutEffect(() => {
     document.title = `Привет, ${name}`;
-    // for(let i=0, i < 200000000; i++) {};
+    //цикл для намеренного торможения для визуализации проблемы хука useLayoutEffect
+    //for(let i=0; i < 2000000000; i++) {};
     console.log('App', 'useEffect');
   }, [name]);
 
@@ -36,6 +37,9 @@ export default function App() {
   const handlerChangeName = (event) => {
     setName(event.target.value);
   };
+
+
+//memoization - возвращает те же самые значения функции
 
   return (
     <>
