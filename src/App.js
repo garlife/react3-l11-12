@@ -8,7 +8,7 @@ export default function App() {
     <div>
       <h3>Возраст: {age}</h3>
       <p>
-        <button onClick={() => setAge(age + 1)}>+</button>
+        <button onClick={() => setAge((a) => a + 1)}>+</button>
       </p>
     </div>
   );
